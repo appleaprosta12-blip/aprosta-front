@@ -1,8 +1,15 @@
-const API_URL = "http://localhost:5000/api/products";
-const SEED_URL = "http://localhost:5000/api/seed";
-const AUTH_URL = "http://localhost:5000/api/auth";
-const UPLOAD_URL = "http://localhost:5000/api/upload";
-const ORDERS_URL = "http://localhost:5000/api/orders";
+// Backend base URL
+// - When running locally (localhost/127.0.0.1), use your local Node server
+// - When deployed (Netlify, etc.), use the Render backend
+const API_BASE_URL =
+  window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
+    ? "http://localhost:5000"
+    : "https://aprosta-backend.onrender.com";
+const API_URL = API_BASE_URL + "/api/products";
+const SEED_URL = API_BASE_URL + "/api/seed";
+const AUTH_URL = API_BASE_URL + "/api/auth";
+const UPLOAD_URL = API_BASE_URL + "/api/upload";
+const ORDERS_URL = API_BASE_URL + "/api/orders";
 const CART_KEY_PREFIX = "aprosta-sphere-cart";
 const TOKEN_KEY = "aprosta-token";
 const USER_KEY = "aprosta-user";
