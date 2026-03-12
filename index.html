@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aprosta.Sphere — Modern Tech</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="#" class="logo">Aprosta<span class="logo-dot">.</span>Sphere</a>
+      <nav class="nav">
+        <a href="#products">Shop</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+        <span class="nav-auth" id="navAuth">
+          <button type="button" class="btn-link" id="loginBtn">Sign in</button>
+          <button type="button" class="btn-link" id="registerBtn">Sign up</button>
+        </span>
+        <span class="nav-user nav-user--hidden" id="navUser">
+          <span class="nav-user-name" id="navUserName"></span>
+          <a href="#products" class="nav-admin-link" id="navAdminLink" hidden>Admin</a>
+          <button type="button" class="btn-link" id="logoutBtn">Logout</button>
+        </span>
+        <button type="button" class="cart-btn" id="cartBtn" aria-label="Cart">
+          <span class="cart-icon">🛒</span>
+          <span class="cart-count" id="cartCount">0</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-bg"></div>
+      <div class="hero-content">
+        <p class="hero-tag">Modern technology, one place.</p>
+        <h1>Welcome to <span class="brand">Aprosta.Sphere</span></h1>
+        <p class="hero-desc">Gear up with 20 handpicked tech products — from audio to desk setup. Quality, style, and simplicity.</p>
+        <a href="#products" class="btn btn-primary">Shop now</a>
+      </div>
+    </section>
+
+    <section class="products" id="products">
+      <div class="container">
+        <h2 class="section-title">Products</h2>
+        <div class="shop-admin-bar" id="shopAdminBar" hidden>
+          <button type="button" class="btn btn-primary" id="shopAddProductBtn">+ Add product</button>
+        </div>
+        <div class="product-grid" id="productGrid"></div>
+        <div class="product-actions" id="productActions" hidden>
+          <p class="products-hint" id="productsHint">No products yet.</p>
+          <button type="button" class="btn btn-primary" id="seedProductsBtn">Load 20 products</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Admin: Add/Edit product modal (used in Shop) -->
+    <div class="admin-product-overlay" id="adminProductOverlay" aria-hidden="true">
+      <div class="admin-product-modal" id="adminProductModal">
+        <button type="button" class="auth-close" id="adminProductClose" aria-label="Close">×</button>
+        <h3 class="auth-title" id="adminFormTitle">Add product</h3>
+        <form id="adminProductForm">
+          <input type="hidden" id="adminProductId">
+          <div class="form-row">
+            <label>Name <input type="text" id="adminName" required></label>
+            <label>Category <input type="text" id="adminCategory" placeholder="e.g. Audio, Desk" required></label>
+          </div>
+          <label>Description <textarea id="adminDescription" rows="2"></textarea></label>
+          <div class="form-row">
+            <label>Price (₱) <input type="number" id="adminPrice" min="0" step="1" required></label>
+            <label>Product image <input type="file" id="adminImageFile" accept="image/*"></label>
+          </div>
+          <input type="hidden" id="adminImageUrl">
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary" id="adminSubmitBtn">Add product</button>
+            <button type="button" class="btn btn-secondary" id="adminCancelBtn" hidden>Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <section class="about" id="about">
+      <div class="container">
+        <h2 class="section-title">About Aprosta.Sphere</h2>
+        <p class="about-text">We curate modern tech that fits your workflow and lifestyle. Every product is chosen for quality, design, and real-world use.</p>
+      </div>
+    </section>
+
+    <section class="contact" id="contact">
+      <div class="container">
+        <h2 class="section-title">Contact Us</h2>
+        <div class="contact-grid">
+          <div class="contact-info">
+            <h3>Visit our store</h3>
+            <p class="contact-address">
+              <strong>Robinsons Place Pagadian</strong><br>
+              Pagadian City, Zamboanga del Sur<br>
+              Philippines
+            </p>
+            <p class="contact-detail"><span class="contact-label">Phone:</span> <a href="tel:+639171234567">+63 917 123 4567</a></p>
+            <p class="contact-detail"><span class="contact-label">Email:</span> <a href="mailto:appleaprosta12@gmail.com">appleaprosta12@gmail.com</a></p>
+            <form class="contact-form" id="contactForm">
+              <input type="text" name="name" placeholder="Your name" required>
+              <input type="email" name="email" placeholder="Your email" required>
+              <textarea name="message" rows="4" placeholder="Your message" required></textarea>
+              <button type="submit" class="btn btn-primary">Send message</button>
+            </form>
+          </div>
+          <div class="contact-map-wrap">
+            <p class="contact-map-label">Store location</p>
+            <iframe
+              class="contact-map"
+              src="https://www.openstreetmap.org/export/embed.html?bbox=123.424%2C7.818%2C123.448%2C7.842&layer=mapnik&marker=7.8307%2C123.4369"
+              title="Robinsons Place Pagadian City"
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+            ></iframe>
+            <a class="contact-map-link" href="https://www.google.com/maps/search/Robinsons+Place+Pagadian+City" target="_blank" rel="noopener">Open in Google Maps</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p class="footer-brand">Aprosta.Sphere</p>
+      <p class="footer-copy">© 2025 — Gray, blue, purple.</p>
+    </div>
+  </footer>
+
+  <!-- Cart drawer -->
+  <aside class="cart-drawer" id="cartDrawer" aria-hidden="true">
+    <div class="cart-drawer-header">
+      <h3>Your cart</h3>
+      <button type="button" class="cart-close" id="cartClose" aria-label="Close cart">×</button>
+    </div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-footer">
+      <p class="cart-total">Total: <strong id="cartTotal">₱0</strong></p>
+      <button type="button" class="btn btn-primary btn-block" id="checkoutBtn">Checkout</button>
+    </div>
+  </aside>
+  <div class="cart-overlay" id="cartOverlay" aria-hidden="true"></div>
+
+  <!-- Checkout drawer (same style as cart) -->
+  <div class="checkout-overlay" id="checkoutOverlay" aria-hidden="true"></div>
+  <aside class="checkout-drawer" id="checkoutDrawer" aria-hidden="true">
+    <div class="checkout-drawer-header">
+      <h3>Checkout</h3>
+      <button type="button" class="cart-close" id="checkoutClose" aria-label="Close checkout">×</button>
+    </div>
+    <div class="checkout-drawer-body">
+      <div id="checkoutFormView">
+        <p class="checkout-summary-label">Order summary</p>
+        <div class="checkout-order-summary" id="checkoutOrderSummary"></div>
+        <p class="checkout-total-row">Total: <strong id="checkoutTotal">₱0</strong></p>
+        <form id="checkoutForm" class="checkout-form">
+          <label>Full name <input type="text" name="customerName" placeholder="Juan Dela Cruz" required></label>
+          <label>Email <input type="email" name="email" placeholder="juan@example.com" required></label>
+          <label>Phone <input type="tel" name="phone" placeholder="09XX XXX XXXX" required></label>
+          <label>Address <input type="text" name="address" placeholder="Street, Barangay" required></label>
+          <label>City <input type="text" name="city" placeholder="Pagadian City" required></label>
+          <label>Notes (optional) <textarea name="notes" rows="2" placeholder="Delivery instructions..."></textarea></label>
+          <button type="submit" class="btn btn-primary btn-block" id="placeOrderBtn">Place order</button>
+        </form>
+      </div>
+      <div id="checkoutSuccessView" class="checkout-success-view" hidden>
+        <div class="checkout-success-icon">✓</div>
+        <h3 class="checkout-success-title">Order placed!</h3>
+        <p class="checkout-success-text">Thank you. We'll prepare your order and contact you soon.</p>
+        <button type="button" class="btn btn-primary btn-block" id="checkoutSuccessClose">Continue shopping</button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Login / Register modal -->
+  <div class="auth-overlay" id="authOverlay" aria-hidden="true">
+    <div class="auth-modal" id="authModal">
+      <button type="button" class="auth-close" id="authClose" aria-label="Close dialog">×</button>
+      <h3 class="auth-title">Sign in or create an account</h3>
+      <div class="auth-tabs">
+        <button type="button" class="auth-tab active" data-tab="login">Sign in</button>
+        <button type="button" class="auth-tab" data-tab="register">Sign up</button>
+      </div>
+      <p id="authMessage" class="auth-message" aria-live="polite" role="status"></p>
+      <div id="loginPanel" class="auth-panel is-active">
+        <form id="loginForm" class="auth-form">
+          <input type="email" placeholder="Email" required name="email">
+          <input type="password" placeholder="Password" required name="password">
+          <button type="submit" class="btn btn-primary btn-block" id="loginSubmitBtn">Sign in</button>
+        </form>
+      </div>
+      <div id="registerPanel" class="auth-panel">
+        <form id="registerForm" class="auth-form">
+          <input type="text" placeholder="Name" required name="name">
+          <input type="email" placeholder="Email" required name="email">
+          <input type="password" placeholder="Password" required name="password">
+          <button type="submit" class="btn btn-primary btn-block">Sign up</button>
+        </form>
+      </div>
+      <button type="button" class="auth-close-btn" id="authCloseBtn">Close</button>
+    </div>
+  </div>
+
+  <!-- Toast for logout / notifications -->
+  <div id="authToast" class="auth-toast" aria-live="polite" role="status"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
