@@ -13,6 +13,8 @@ const ORDERS_URL = API_BASE_URL + "/api/orders";
 const CART_KEY_PREFIX = "aprosta-sphere-cart";
 const TOKEN_KEY = "aprosta-token";
 const USER_KEY = "aprosta-user";
+const FALLBACK_PRODUCT_IMAGE =
+  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='640' height='480' viewBox='0 0 640 480'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' x2='1' y1='0' y2='1'%3E%3Cstop stop-color='%23e5e7eb'/%3E%3Cstop offset='1' stop-color='%23c7d2fe'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='640' height='480' fill='url(%23g)'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' fill='%234b5563' font-family='Outfit,Arial,sans-serif' font-size='28' dy='.3em'%3EProduct Image%3C/text%3E%3C/svg%3E";
 
 let cart = [];
 
@@ -101,6 +103,22 @@ function escapeHtml(str) {
   const div = document.createElement("div");
   div.textContent = str;
   return div.innerHTML;
+}
+
+function resolveImageUrl(rawUrl) {
+  const value = String(rawUrl || "").trim();
+  if (!value) return FALLBACK_PRODUCT_IMAGE;
+  // Keep full data URLs as-is.
+  if (value.startsWith("data:")) return value;
+  // Handle root-relative upload paths from API.
+  if (value.startsWith("/")) return API_BASE_URL + value;
+  // Upgrade insecure backend links when frontend runs on HTTPS.
+  if (window.location.protocol === "https:" && value.startsWith("http://")) {
+    return value.replace(/^http:\/\//i, "https://");
+  }
+  // Handle old records that only store filename.
+  if (!/^https?:\/\//i.test(value)) return `${API_BASE_URL}/uploads/${value}`;
+  return value;
 }
 
 function showEmptyProducts(message) {
@@ -192,13 +210,14 @@ async function loadProducts() {
                 <button type="button" class="btn-delete" data-id="${escapeAttr(p._id)}">Delete</button>
               </span>`
             : "";
+          const productImage = resolveImageUrl(p.image);
           const addToCartBtn =
             !isAdmin
-              ? `<button type="button" class="btn-add" data-id="${escapeAttr(p._id)}" data-name="${escapeAttr(p.name)}" data-price="${escapeAttr(p.price)}" data-image="${escapeAttr(p.image)}">Add to cart</button>`
+              ? `<button type="button" class="btn-add" data-id="${escapeAttr(p._id)}" data-name="${escapeAttr(p.name)}" data-price="${escapeAttr(p.price)}" data-image="${escapeAttr(productImage)}">Add to cart</button>`
               : "";
           return `
         <article class="product-card" data-id="${escapeHtml(p._id)}">
-          <img class="product-image" src="${escapeAttr(p.image || "")}" alt="${escapeAttr(p.name)}" loading="lazy">
+          <img class="product-image" src="${escapeAttr(productImage)}" alt="${escapeAttr(p.name)}" loading="lazy">
           <div class="product-body">
             <p class="product-category">${escapeHtml(p.category || "Tech")}</p>
             <h3 class="product-name">${escapeHtml(p.name)}</h3>
@@ -233,6 +252,17 @@ async function loadProducts() {
         });
       });
     });
+    grid.querySelectorAll(".product-image").forEach((img) => {
+      img.addEventListener(
+        "error",
+        () => {
+          if (img.dataset.fallbackApplied) return;
+          img.dataset.fallbackApplied = "1";
+          img.src = FALLBACK_PRODUCT_IMAGE;
+        },
+        { once: true }
+      );
+    });
     if (isAdmin) {
       grid.querySelectorAll(".btn-edit").forEach((btn) => {
         btn.addEventListener("click", async () => {
@@ -245,7 +275,7 @@ async function loadProducts() {
             document.getElementById("adminName").value = p.name || "";
             document.getElementById("adminDescription").value = p.description || "";
             document.getElementById("adminPrice").value = p.price ?? "";
-            document.getElementById("adminImageUrl").value = p.image || "";
+            document.getElementById("adminImageUrl").value = resolveImageUrl(p.image);
             const fileInput = document.getElementById("adminImageFile");
             if (fileInput) fileInput.value = "";
             document.getElementById("adminCategory").value = p.category || "";
